@@ -83,7 +83,7 @@ func (cm *commonMutation) runTests(n int) error {
         lines := bytes.Split(output, []byte("\n"))
         lastLine := lines[len(lines)-2]
         if bytes.HasPrefix(lastLine, []byte("FAIL")) {
-            cm.logf("mutation %d failed the tests properly", n)
+            cm.logf("mutation %d broke the tests properly", n)
         } else {
             cm.logf("mutation %d created an error: %s", n, lastLine)
         }

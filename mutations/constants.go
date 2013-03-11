@@ -2,12 +2,14 @@ package mutations
 
 import (
     "go/ast"
+    "go/token"
     "log"
     "path/filepath"
 )
 
 func init() {
-    Mutations["0"] = NewConstantMutation("0", "1")
+    Mutations["0"] = NewConstantMutation(token.INT, "0", "1")
+    Mutations["empty"] = NewConstantMutation(token.STRING, "", "a non-empty string")
 }
 
 type ConstantMutation struct {
@@ -51,9 +53,9 @@ func (bop *ConstantMutation) perform(n int, exp *ast.BasicLit, value string) err
     return bop.runTests(n)
 }
 
-func NewConstantMutation(value string, mutations ...string) *ConstantMutation {
+func NewConstantMutation(kind token.Token, value string, mutations ...string) *ConstantMutation {
     return &ConstantMutation{
         mutations: mutations,
-        expFinder: &BasicLitFinder{Value: value},
+        expFinder: &BasicLitFinder{Kind: kind, Value: value},
     }
 }
